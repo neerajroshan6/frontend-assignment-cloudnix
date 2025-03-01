@@ -18,8 +18,71 @@ $(document).ready(function() {
     }
 
     function validateStep3() {
-        return $('#productName').val().trim() !== '' && 
-               $('#netPrice').val().trim() !== '';
+        // Get all required values
+        const productName = $('#productName').val().trim();
+        const listPrice = $('#listPrice').val().trim();
+        const netPrice = $('#netPrice').val().trim();
+        const discountPercentage = $('#discountPercentage').val().trim();
+        const gstRate = $('#gstRate').val().trim();
+
+        // Check if required fields are filled
+        let isValid = true;
+        let errorMessage = [];
+
+        if (!productName) {
+            isValid = false;
+            errorMessage.push('Product name');
+            $('#productName').addClass('is-invalid');
+        } else {
+            $('#productName').removeClass('is-invalid');
+        }
+
+        if (!listPrice) {
+            isValid = false;
+            errorMessage.push('List price');
+            $('#listPrice').addClass('is-invalid');
+        } else if (isNaN(parseFloat(listPrice)) || parseFloat(listPrice) <= 0) {
+            isValid = false;
+            errorMessage.push('Valid list price');
+            $('#listPrice').addClass('is-invalid');
+        } else {
+            $('#listPrice').removeClass('is-invalid');
+        }
+
+        if (!netPrice) {
+            isValid = false;
+            errorMessage.push('Net price');
+            $('#netPrice').addClass('is-invalid');
+        } else {
+            $('#netPrice').removeClass('is-invalid');
+        }
+
+        if (discountPercentage && (isNaN(parseFloat(discountPercentage)) || parseFloat(discountPercentage) < 0 || parseFloat(discountPercentage) > 100)) {
+            isValid = false;
+            errorMessage.push('Valid discount percentage (0-100)');
+            $('#discountPercentage').addClass('is-invalid');
+        } else {
+            $('#discountPercentage').removeClass('is-invalid');
+        }
+
+        if (!gstRate) {
+            isValid = false;
+            errorMessage.push('GST rate');
+            $('#gstRate').addClass('is-invalid');
+        } else if (isNaN(parseFloat(gstRate)) || parseFloat(gstRate) < 0) {
+            isValid = false;
+            errorMessage.push('Valid GST rate');
+            $('#gstRate').addClass('is-invalid');
+        } else {
+            $('#gstRate').removeClass('is-invalid');
+        }
+
+        // Show error message if validation fails
+        if (!isValid) {
+            showAlert(`Please enter: ${errorMessage.join(', ')}`, 'danger');
+        }
+
+        return isValid;
     }
 
     function updateProgress(step) {
@@ -103,9 +166,9 @@ $(document).ready(function() {
     });
 
     $('#nextStep3Button').on('click', function() {
-        validateStep3()
-            ? showAlert('Product added successfully!', 'success')
-            : showAlert('Please fill in all required fields');
+        if(validateStep3()) {
+            showAlert('Product added successfully!', 'success');
+        }
     });
 
     $('#backButton, #backButton3').on('click', function() {
@@ -270,6 +333,11 @@ $(document).ready(function() {
 
     // Initialize preview
     updatePreview();
+
+    // Add input event listeners to remove invalid state when user starts typing
+    $('#productName, #listPrice, #netPrice, #discountPercentage, #gstRate').on('input', function() {
+        $(this).removeClass('is-invalid');
+    });
 });
 
 function showAlert(message, type = 'warning') {
