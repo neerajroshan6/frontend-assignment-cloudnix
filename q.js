@@ -324,7 +324,7 @@ $(document).ready(function() {
 
         if (additionalInfo.length > 0) {
             $('#previewShipping')
-                .text(additionalInfo.join(' + '))
+                .text(additionalInfo.join(' . '))
                 .removeClass('d-none');
         } else {
             $('#previewShipping').addClass('d-none');
