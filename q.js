@@ -18,14 +18,14 @@ $(document).ready(function() {
     }
 
     function validateStep3() {
-
+        // Get all required values
         const productName = $('#productName').val().trim();
         const listPrice = $('#listPrice').val().trim();
         const netPrice = $('#netPrice').val().trim();
         const discountPercentage = $('#discountPercentage').val().trim();
         const gstRate = $('#gstRate').val().trim();
 
-
+        // Check if required fields are filled
         let isValid = true;
         let errorMessage = [];
 
@@ -77,7 +77,7 @@ $(document).ready(function() {
             $('#gstRate').removeClass('is-invalid');
         }
 
-    
+        // Show error message if validation fails
         if (!isValid) {
             showAlert(`Please enter: ${errorMessage.join(', ')}`, 'danger');
         }
@@ -98,10 +98,10 @@ $(document).ready(function() {
     }
 
     function showStep(step) {
-
+        // Hide all steps
         $steps.removeClass('visible').addClass('hidden');
         
-
+        // Show target step
         $(`#step${step}`).removeClass('hidden').addClass('visible');
         
         if(step === 1 && selectedTheme) {
@@ -126,6 +126,7 @@ $(document).ready(function() {
         
         updateProgress(step);
         currentStep = step;
+        updateBackButtonVisibility();
     }
 
     // Event delegation for better performance
@@ -159,7 +160,7 @@ $(document).ready(function() {
     $('#nextStep2Button').on('click', function() {
         if(validateStep2()) {
             showStep(3);
-            updatePreview(); 
+            updatePreview(); // Initialize preview when entering step 3
         } else {
             showAlert('Please enter a product type to continue');
         }
@@ -172,7 +173,9 @@ $(document).ready(function() {
     });
 
     $('#backButton, #backButton3').on('click', function() {
-        showStep(currentStep - 1);
+        if (currentStep > 1) {
+            showStep(currentStep - 1);
+        }
     });
 
     $('.image-input').on('change', function() {
@@ -240,6 +243,7 @@ $(document).ready(function() {
     $('#step2, #step3').addClass('hidden');
     $('#step1').addClass('visible');
     updateProgress(1);
+    updateBackButtonVisibility();
 
     // Debounce validation functions
     const debounce = (fn, delay) => {
@@ -338,6 +342,14 @@ $(document).ready(function() {
     $('#productName, #listPrice, #netPrice, #discountPercentage, #gstRate').on('input', function() {
         $(this).removeClass('is-invalid');
     });
+
+    function updateBackButtonVisibility() {
+        if (currentStep === 1) {
+            $('#backButton').hide();
+        } else {
+            $('#backButton, #backButton3').show();
+        }
+    }
 });
 
 function showAlert(message, type = 'warning') {
