@@ -4,7 +4,7 @@ $(document).ready(function() {
     
     const $wizard = $('.wizard-container');
     
-    // Cache frequently used selectors
+
     const $steps = $('#step1, #step2, #step3');
     const $progressBar = $('#progressBar');
     const $stepIndicators = $('.step-indicator');
@@ -35,10 +35,10 @@ $(document).ready(function() {
     }
 
     function showStep(step) {
-        // Hide all steps
+    
         $steps.removeClass('visible').addClass('hidden');
         
-        // Show target step
+       
         $(`#step${step}`).removeClass('hidden').addClass('visible');
         
         if(step === 1 && selectedTheme) {
@@ -65,7 +65,7 @@ $(document).ready(function() {
         currentStep = step;
     }
 
-    // Event delegation for better performance
+
     $wizard.on('click', '.theme-card', function() {
         const $this = $(this);
         const $allButtons = $('.apply-btn');
@@ -96,7 +96,8 @@ $(document).ready(function() {
     $('#nextStep2Button').on('click', function() {
         if(validateStep2()) {
             showStep(3);
-            updatePreview(); // Initialize preview when entering step 3
+            updatePreview(); 
+            
         } else {
             showAlert('Please enter a product type to continue');
         }
@@ -138,7 +139,7 @@ $(document).ready(function() {
                 $placeholder.addClass('d-none');
                 $removeBtn.removeClass('d-none');
                 
-                // Update product preview card
+               
                 $('#previewImage')
                     .attr('src', e.target.result)
                     .removeClass('d-none');
@@ -156,14 +157,14 @@ $(document).ready(function() {
         const $placeholder = $box.find('.upload-placeholder');
         const $removeBtn = $box.find('.remove-image');
         
-        // Reset form preview
+
         $preview
             .addClass('d-none')
             .attr('src', '');
         $placeholder.removeClass('d-none');
         $removeBtn.addClass('d-none');
         
-        // Reset product preview card
+        
         $('#previewImage')
             .addClass('d-none')
             .attr('src', '');
@@ -178,7 +179,7 @@ $(document).ready(function() {
     $('#step1').addClass('visible');
     updateProgress(1);
 
-    // Debounce validation functions
+    
     const debounce = (fn, delay) => {
         let timeoutId;
         return (...args) => {
@@ -188,11 +189,11 @@ $(document).ready(function() {
     };
 
     const validateInput = debounce(() => {
-        // validation logic
+      
     }, 250);
 
     function updatePreview() {
-        // Update Product Title and Description
+    
         const productName = $('#productName').val().trim() || 'Product title';
         $('#previewTitle').text(productName);
         
@@ -206,31 +207,30 @@ $(document).ready(function() {
         const gstRate = parseFloat($('#gstRate').val().trim() || '0');
         const isGstInclusive = $('#gst-check').is(':checked');
 
-        // Start with list price
+
         let calculatedPrice = listPrice;
 
-        // Apply discount if any
+
         if (discountPercentage > 0) {
             const discount = (calculatedPrice * discountPercentage) / 100;
             calculatedPrice -= discount;
         }
 
-        // Add GST if applicable
+    
         if (gstRate > 0 && !isGstInclusive) {
             const gstAmount = (calculatedPrice * gstRate) / 100;
             calculatedPrice += gstAmount;
         }
 
-        // Add shipping charges
+
         calculatedPrice += shippingCharges;
 
-        // Update net price input (final price after all calculations)
+    
         $('#netPrice').val(calculatedPrice.toFixed(2));
 
-        // Update price display
+  
         $('#previewPrice').text(`RS ${calculatedPrice.toFixed(2)}`);
         
-        // Show list price if different from calculated price
         if (listPrice > calculatedPrice) {
             $('#previewListPrice')
                 .text(`RS ${listPrice.toFixed(2)}`)
@@ -240,7 +240,7 @@ $(document).ready(function() {
             $('#previewListPrice').addClass('d-none');
         }
 
-        // Add shipping and GST info
+       
         let additionalInfo = [];
         
         if (shippingCharges > 0) {
@@ -264,11 +264,11 @@ $(document).ready(function() {
         }
     }
 
-    // Update event listeners
+
     $('#productName, #productDescription, #listPrice, #discountPercentage, #shippingCharges, #gstRate, #gst-check')
         .on('input change', updatePreview);
 
-    // Initialize preview
+ 
     updatePreview();
 });
 
