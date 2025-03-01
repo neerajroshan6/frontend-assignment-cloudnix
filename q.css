@@ -107,7 +107,7 @@ body {
     height: 250px;
     object-fit: cover;
     object-position: top;
-    clip-path: inset(0 0 5% 0);
+    clip-path: inset(0 0 10% 0);
     transition: transform 0.3s ease;
     will-change: transform;
 }
