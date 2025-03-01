@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Shop Onboarding Wizard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="q.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <meta name="description" content="Shop Onboarding Wizard">
+    <link rel="preload" href="https://admin.shopnix.io/static/images/themes/layout3/l3-bags.webp" as="image">
+</head>
+<body>
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto">Notification</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
+    <div class="progress mt-3">
+        <div class="progress-bar" id="progressBar" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+    <h2 class="text-center">Shop Onboarding Wizard</h2>
+    <div class="wizard-container">
+        <div class="step-indicators mb-4">
+            <div class="step-indicator active">
+                <div class="step-number">1</div>
+                <div class="step-title">Choose Theme</div>
+            </div>
+            <div class="step-indicator">
+                <div class="step-number">2</div>
+                <div class="step-title">Categories</div>
+            </div>
+            <div class="step-indicator">
+                <div class="step-number">3</div>
+                <div class="step-title">Add Product</div>
+            </div>
+        </div>
+        
+        <div id="step1" class="container mt-4 visible">
+            <h4 class="fw-bold">Apply a theme</h4>
+            <div class="row g-3 mt-3">
+                <!-- Bags Theme -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border rounded theme-card active" data-theme="bags">
+                        <img src="https://admin.shopnix.io/static/images/themes/layout3/l3-bags.webp" 
+                             class="card-img-top img-fluid" 
+                             alt="Bags Theme"
+                             loading="lazy"
+                             width="300"
+                             height="200">
+                        <div class="card-body text-center">
+                            <h5 class="fw-bold mb-1">Bags theme <span class="text-muted small">(recommended)</span></h5>
+                            <button class="btn btn-outline-success apply-btn" disabled>✔ Selected</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Flex Theme -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border rounded theme-card" data-theme="flex">
+                        <img src="https://admin.shopnix.io/static/images/themes/layout3/impulse.webp" class="card-img-top img-fluid" alt="Chic Theme">
+                        <div class="card-body text-center">
+                            <h5 class="fw-bold mb-1">Flex theme</h5>
+                            <button class="btn btn-outline-primary apply-btn">Apply</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Chic Theme -->
+                <div class="col-md-4">
+                    <div class="card shadow-sm border rounded theme-card" data-theme="chic">
+                        <img src="https://admin.shopnix.io/static/images/themes/layout3/l3-chic.webp" class="card-img-top img-fluid" alt="Flex Theme">
+                        <div class="card-body text-center">
+                            <h5 class="fw-bold mb-1">Chic theme</h5>
+                            <button class="btn btn-outline-primary apply-btn">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-column flex-sm-row justify-content-between gap-2 mt-4">
+                <button id="backButton" class="btn btn-secondary">Back</button>
+                <button id="nextButton" class="btn btn-orange">Next</button>
+            </div>
+        </div>
+        
+        <!-- Step 2 -->
+        <div id="step2" class="container mt-4 hidden">
+            <h4 class="fw-bold">Lets add a type, Category and Sub-category</h4>
+            <div class="form-group mt-3">
+                <label class="fw-semibold">Add a product type</label>
+                <input type="text" class="form-control" placeholder="eg - books">
+            </div>
+            <div class="form-group mt-3">
+                <label class="fw-semibold">Add a category (optional)</label>
+                <input type="text" class="form-control" placeholder="eg - Academic book">
+            </div>
+            <div class="form-group mt-3">
+                <label class="fw-semibold">Add a sub-category (optional)</label>
+                <input type="text" class="form-control" placeholder="eg - medical book">
+            </div>
+            <div class="d-flex flex-column flex-sm-row justify-content-between gap-2 mt-4">
+                <button id="backButton" class="btn btn-secondary">Back</button>
+                <button id="nextStep2Button" class="btn btn-orange">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div id="step3" class="container mt-4 hidden">
+            <div class="row">
+                <!-- Form Section (Left) -->
+                <div class="col-md-8">
+                    <h4 class="fw-bold">Let's add your first product</h4>
+
+                    <h5 class="fw-bold mt-3">Basic Details</h5>
+                    
+                    <label class="fw-semibold mt-2">Product name</label>
+                    <input type="text" class="form-control" id="productName" placeholder="eg - anatomy book">
+                    
+                    <label class="fw-semibold mt-2">Product Description</label>
+                    <textarea class="form-control" id="productDescription" placeholder="Input text"></textarea>
+                    
+                    <h5 class="fw-bold mt-3">Add Image(s)</h5>
+                    <div class="image-preview-container d-flex flex-wrap gap-2 mb-3">
+                        <div class="image-preview-box border rounded p-2" style="width: 120px; height: 120px;">
+                            <div class="upload-placeholder d-flex flex-column align-items-center justify-content-center h-100" style="background-color: #f4f4f4;">
+                                <i class="bi bi-cloud-upload fs-3 text-muted"></i>
+                                <span class="text-muted small">Upload Image</span>
+                            </div>
+                            <img class="preview-image d-none w-100 h-100" style="object-fit: cover;">
+                            <button type="button" class="btn-close remove-image d-none position-absolute top-0 end-0 m-1" aria-label="Remove image"></button>
+                        </div>
+                    </div>
+                    <input type="file" class="form-control image-input" accept="image/*" multiple>
+                    
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" id="sku-check" checked>
+                        <label class="form-check-label fw-semibold" for="sku-check">This product has an SKU code</label>
+                    </div>
+                    <input type="text" class="form-control mt-2" placeholder="eg - PROD0001">
+                    
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" id="hsn-check">
+                        <label class="form-check-label fw-semibold" for="hsn-check">This product has an HSN/SAC code</label>
+                    </div>
+                    <hr>
+                    <h5 class="fw-bold">Pricing Details</h5>
+
+                    <div class="form-check mt-2">
+                        
+                        <input class="form-check-input" type="checkbox" id="gst-check">
+                        <label class="form-check-label fw-semibold" for="gst-check">Price inclusive of GST</label>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="fw-semibold">Net price</label>
+                            <input type="text" class="form-control" id="netPrice" placeholder="Final price after calculations" readonly>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-semibold">List price</label>
+                            <input type="text" class="form-control" id="listPrice" placeholder="eg - 100">
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="fw-semibold">Discount percentage</label>
+                            <input type="text" class="form-control" id="discountPercentage" placeholder="eg - 40">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-semibold">GST rate</label>
+                            <input type="text" class="form-control" id="gstRate" placeholder="eg - 20">
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="fw-semibold">Shipping charges (if any)</label>
+                            <input type="text" class="form-control" id="shippingCharges" placeholder="eg - 40">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="fw-semibold">Stock level</label>
+                            <input type="text" class="form-control" placeholder="eg - 110">
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <button id="backButton3" class="btn btn-secondary">Back</button>
+                        <button id="nextStep3Button" class="btn btn-orange">Next</button>
+                    </div>
+                </div>
+                
+                <!-- Preview Section (Right) -->
+                <div class="col-md-4 d-none d-md-block">
+                    <div class="preview-card position-sticky" style="top: 20px;">
+                        <div class="card shadow-sm">
+                            <div class="preview-image-container" style="height: 200px; background: #f8f8f8;">
+                                <img id="previewImage" class="w-100 h-100 object-fit-cover d-none">
+                                <div id="previewPlaceholder" class="d-flex align-items-center justify-content-center h-100">
+                                    <i class="bi bi-image text-muted" style="font-size: 2rem;"></i>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <h3 id="previewTitle" class="h5 mb-2">Product title</h3>
+                                <p id="previewDescription" class="text-muted small mb-3">Product description will appear here...</p>
+                                <div class="d-flex flex-column">
+                                    <div class="d-flex align-items-baseline gap-2">
+                                        <span id="previewPrice" class="h5 mb-0 text-orange">RS 90</span>
+                                        <span id="previewListPrice" class="text-muted text-decoration-line-through small">RS 100</span>
+                                    </div>
+                                    <span id="previewShipping" class="text-muted small d-none">+ RS 40 shipping</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="q.js"></script>
+</body>
+</html>
+ 

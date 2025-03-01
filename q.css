@@ -1,0 +1,452 @@
+body { 
+    background: #f5f5f5; 
+    padding: 20px; 
+}
+
+.wizard-container { 
+    max-width: 600px; 
+    margin: auto; 
+    background: #fff; 
+    padding: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05); 
+    contain: layout style paint;
+}
+
+.btn-orange {
+    background-color: orange;
+    border-color: orange;
+    color: white;
+    transition: background-color 0.2s ease;
+}
+
+.btn-orange:hover {
+    background-color: darkorange;
+    border-color: darkorange;
+}
+
+.step-indicators {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.step-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 1;
+}
+
+.step-indicator::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    width: calc(100% - 40px);
+    height: 2px;
+    background: #e0e0e0;
+    z-index: 1;
+}
+
+.step-indicator:last-child::after {
+    display: none;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    z-index: 2;
+    transition: background-color 0.3s ease;
+}
+
+.step-title {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.step-indicator.active {
+    .step-number {
+        background: orange;
+        color: white;
+    }
+    .step-title {
+        color: orange;
+        font-weight: bold;
+    }
+}
+
+.theme-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid transparent;
+    background-color: #f8f8f8;
+    transition: all 0.3s ease;
+    transform: translateZ(0);
+    will-change: transform;
+    overflow: hidden;
+}
+
+.theme-card.active {
+    border-color: #28a745;
+    box-shadow: 0 0 0 1px #28a745;
+    background-color: #fff;
+}
+
+.theme-card img {
+    height: 200px;
+    object-fit: cover;
+    object-position: top;
+    clip-path: inset(0 0 12% 0);
+    transition: transform 0.3s ease;
+    will-change: transform;
+}
+
+.theme-card:hover img {
+    transform: scale(1.1);
+}
+
+.theme-card .card-body {
+    flex-grow: 1;
+}
+
+.text-muted.small {
+    font-size: 12px;
+}
+
+.form-check-input {
+    cursor: pointer;
+}
+
+.form-check-label {
+    cursor: pointer;
+}
+
+.progress-bar {
+    background: orange;
+    transition: width 0.4s ease-in-out;
+    transform: translateZ(0);
+}
+
+/* Loading state styles */
+.btn-loading {
+    position: relative;
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.btn-loading::after {
+    content: '';
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Form validation styles */
+.form-control.is-invalid {
+    border-color: #dc3545;
+    background-image: url("data:image/svg+xml,...");
+}
+
+.invalid-feedback {
+    display: block;
+    visibility: hidden;
+    height: 0;
+    transition: visibility 0.3s ease, height 0.3s ease;
+}
+
+.is-invalid + .invalid-feedback {
+    visibility: visible;
+    height: auto;
+}
+
+/* Add these styles to your existing CSS */
+.image-preview-box {
+    position: relative;
+    overflow: hidden;
+    background-color: #f8f8f8;
+}
+
+.preview-image {
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.remove-image {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.image-preview-box:hover .remove-image {
+    opacity: 1;
+}
+
+/* Theme card button styles */
+.theme-card .btn-outline-primary {
+    color: orange;
+    border-color: orange;
+}
+
+.theme-card .btn-outline-primary:hover {
+    background-color: orange;
+    color: white;
+}
+
+.theme-card .btn-outline-success {
+    color: #28a745;
+    border-color: #28a745;
+    background-color: transparent;
+}
+
+.theme-card .btn-outline-success:disabled {
+    opacity: 1;
+}
+
+/* Replace the step transitions with simple fade */
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+    animation: fadeIn 0.2s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Update responsive styles */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .wizard-container {
+        margin: 10px;
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    .step-indicators {
+        overflow-x: auto;
+        padding-bottom: 10px;
+        margin-bottom: 1rem;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .step-indicator {
+        min-width: 100px;
+        margin: 0 5px;
+    }
+
+    .step-title {
+        font-size: 0.75rem;
+    }
+
+    .row {
+        margin: 0 -8px;
+    }
+
+    .col-md-4, .col-md-6 {
+        padding: 0 8px;
+        margin-bottom: 16px;
+    }
+
+    .theme-card {
+        max-width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .theme-card img {
+        height: 180px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    h4 {
+        font-size: 1.25rem;
+    }
+
+    h5 {
+        font-size: 1.1rem;
+    }
+
+    .image-preview-container {
+        gap: 8px !important;
+    }
+
+    .image-preview-box {
+        width: calc(50% - 8px) !important;
+        height: 100px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .wizard-container {
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .step-number {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    .step-indicator::after {
+        top: 16px;
+    }
+
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+        padding: 10px;
+    }
+
+    .d-flex.justify-content-between,
+    .d-flex.justify-content-end {
+        flex-direction: column;
+        gap: 8px !important;
+    }
+
+    .theme-card img {
+        height: 150px;
+    }
+
+    .form-control {
+        font-size: 16px; /* Prevent zoom on iOS */
+        padding: 10px;
+    }
+
+    .form-label {
+        font-size: 14px;
+    }
+
+    .row {
+        margin: 0;
+    }
+
+    .col-md-6 {
+        padding: 0;
+    }
+
+    .progress {
+        height: 8px;
+    }
+
+    .toast-container {
+        padding: 8px;
+        width: 100%;
+    }
+
+    .toast {
+        width: 100%;
+    }
+}
+
+/* Add smooth scrolling for all devices */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Improve touch interactions */
+@media (hover: none) {
+    .btn:hover {
+        transform: none !important;
+    }
+
+    .theme-card:hover img {
+        transform: none;
+    }
+}
+
+/* Add preview card styles */
+.preview-card {
+    transition: all 0.3s ease;
+}
+
+.preview-image-container {
+    position: relative;
+    overflow: hidden;
+    background-color: #f8f8f8;
+    border-radius: 4px 4px 0 0;
+}
+
+#previewImage {
+    transition: transform 0.3s ease;
+}
+
+.preview-card:hover #previewImage {
+    transform: scale(1.05);
+}
+
+/* Update responsive styles for preview */
+@media (max-width: 768px) {
+    .preview-card {
+        margin-top: 20px;
+    }
+}
+
+/* Add these styles */
+.text-orange {
+    color: orange;
+}
+
+.preview-card .card-body {
+    padding: 1rem;
+}
+
+#previewTitle {
+    font-size: 1.1rem;
+    line-height: 1.3;
+    font-weight: 600;
+}
+
+#previewDescription {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: #6c757d;
+}
+
+#previewPrice {
+    font-weight: 600;
+    margin: 0;
+}
+
+#previewListPrice {
+    font-size: 0.875rem;
+} 
