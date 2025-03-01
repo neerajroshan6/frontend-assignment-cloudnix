@@ -294,6 +294,16 @@ $(document).ready(function() {
         // Update net price input (final price after all calculations)
         $('#netPrice').val(calculatedPrice.toFixed(2));
 
+        // Clean up discount percentage display
+        let discountDisplay = '';
+        if (discountPercentage && discountPercentage !== '0') {
+            // Remove any existing + symbols and get just the number
+            const discountNum = discountPercentage.replace(/[^0-9.]/g, '');
+            if (discountNum) {
+                discountDisplay = `+${discountNum}% OFF`; // Add + before percentage and OFF at the end
+            }
+        }
+
         // Update price display
         $('#previewPrice').text(`RS ${calculatedPrice.toFixed(2)}`);
         
@@ -318,8 +328,8 @@ $(document).ready(function() {
             additionalInfo.push(`${isGstInclusive ? 'Incl.' : '+ '} ${gstRate}% GST`);
         }
 
-        if (discountPercentage && discountPercentage !== '0') {
-            additionalInfo.push(`${discountPercentage}% OFF`);
+        if (discountDisplay) {
+            additionalInfo.push(discountDisplay); // Use cleaned up discount display
         }
 
         if (additionalInfo.length > 0) {
