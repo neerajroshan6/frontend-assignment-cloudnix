@@ -268,23 +268,23 @@ $(document).ready(function() {
 
         // Get all price-related values
         const listPrice = parseFloat($('#listPrice').val().trim() || '0');
-        const discountPercentage = parseFloat($('#discountPercentage').val().trim() || '0');
+        const discountPercentage = $('#discountPercentage').val().trim() || '0';
         const shippingCharges = parseFloat($('#shippingCharges').val().trim() || '0');
-        const gstRate = parseFloat($('#gstRate').val().trim() || '0');
+        const gstRate = $('#gstRate').val().trim() || '0';
         const isGstInclusive = $('#gst-check').is(':checked');
 
         // Start with list price
         let calculatedPrice = listPrice;
 
         // Apply discount if any
-        if (discountPercentage > 0) {
-            const discount = (calculatedPrice * discountPercentage) / 100;
-            calculatedPrice -= discount;
+        if (discountPercentage && discountPercentage !== '0') {
+            const discount = parseFloat(discountPercentage.replace(/[^0-9.]/g, '')) / 100;
+            calculatedPrice -= calculatedPrice * discount;
         }
 
         // Add GST if applicable
-        if (gstRate > 0 && !isGstInclusive) {
-            const gstAmount = (calculatedPrice * gstRate) / 100;
+        if (gstRate && gstRate !== '0') {
+            const gstAmount = (calculatedPrice * parseFloat(gstRate.replace(/[^0-9.]/g, '')) / 100);
             calculatedPrice += gstAmount;
         }
 
@@ -314,11 +314,11 @@ $(document).ready(function() {
             additionalInfo.push(`+ RS ${shippingCharges.toFixed(2)} shipping`);
         }
         
-        if (gstRate > 0) {
+        if (gstRate && gstRate !== '0') {
             additionalInfo.push(`${isGstInclusive ? 'Incl.' : '+ '} ${gstRate}% GST`);
         }
 
-        if (discountPercentage > 0) {
+        if (discountPercentage && discountPercentage !== '0') {
             additionalInfo.push(`${discountPercentage}% OFF`);
         }
 
@@ -349,6 +349,46 @@ $(document).ready(function() {
         } else {
             $('#backButton, #backButton3').show();
         }
+    }
+
+    // Add event listener for discount percentage input
+    document.getElementById('discountPercentage').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+        
+        if (value) {
+            // Add + symbol if it's not already there
+            if (!value.startsWith('+')) {
+                value = '+' + value;
+            }
+            // Add % symbol if it's not already there
+            if (!value.endsWith('%')) {
+                value = value + '%';
+            }
+        }
+        
+        e.target.value = value;
+        
+        // Trigger price calculation
+        calculateNetPrice();
+    });
+
+    // Update calculateNetPrice function to handle the + symbol
+    function calculateNetPrice() {
+        const listPrice = parseFloat(document.getElementById('listPrice').value) || 0;
+        const discountStr = document.getElementById('discountPercentage').value || '0';
+        const gstRate = parseFloat(document.getElementById('gstRate').value) || 0;
+        
+        // Remove + and % symbols and convert to number
+        const discount = parseFloat(discountStr.replace(/[+%]/g, '')) || 0;
+        
+        // Calculate net price
+        const discountAmount = (listPrice * discount) / 100;
+        const priceAfterDiscount = listPrice - discountAmount;
+        const gstAmount = (priceAfterDiscount * gstRate) / 100;
+        const netPrice = priceAfterDiscount + gstAmount;
+        
+        // Update net price field
+        document.getElementById('netPrice').value = netPrice.toFixed(2);
     }
 });
 
